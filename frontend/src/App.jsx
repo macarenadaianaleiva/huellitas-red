@@ -3,9 +3,9 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-/* import Reservar from "./pages/Reservar";
-import Success from "./pages/Success"; */
+import Success from "./pages/Success";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Booking from "./pages/Booking";
 
 function App() {
   return (
@@ -15,15 +15,15 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-     {/*    <Route
+        <Route
           path="/reservar"
           element={
             <ProtectedRoute>
-              <Reservar />
+              <Booking />
             </ProtectedRoute>
           }
         />
-        <Route path="/success" element={<Success />} /> */}
+        <Route path="/success" element={<Success />} />
       </Routes>
     </Router>
   );
