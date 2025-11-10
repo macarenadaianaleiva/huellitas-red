@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
-import { api } from "../../services/api";
 import ErrorMessage from "../../components/ErrorMessage";
+import { api } from "../../services/api";
+import styles from "./style.module.css";
 
 export default function Booking() {
   const [form, setForm] = useState({
@@ -11,6 +12,7 @@ export default function Booking() {
     horaInicio: "",
     cantidadMascotas: 1,
   });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -30,49 +32,98 @@ export default function Booking() {
     setLoading(true);
     try {
       await api.reservar(form);
-      navigate("/success");
+      navigate("/success", { state: { type: "reserva" } });
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Error al registrar la reserva");
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Reservar Turno</h2>
-      <form onSubmit={handleSubmit}>
-        <select
-          onChange={(e) =>
-            setForm({ ...form, tipoServicio: e.target.value })
-          }
-        >
-          <option value="">Seleccioná un servicio</option>
-          <option value="guarderia">Guardería</option>
-          <option value="paseo">Paseo</option>
-          <option value="cuidado">Cuidado e Higiene</option>
-        </select>
-        <input
-          type="date"
-          onChange={(e) => setForm({ ...form, fechaInicio: e.target.value })}
-        />
-        <input
-          type="time"
-          onChange={(e) => setForm({ ...form, horaInicio: e.target.value })}
-        />
-        <input
-          type="number"
-          min="1"
-          onChange={(e) =>
-            setForm({ ...form, cantidadMascotas: e.target.value })
-          }
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? <Loader /> : "Confirmar"}
-        </button>
-      </form>
+  const handleCantidadChange = (delta) => {
+    setForm((prev) => ({
+      ...prev,
+      cantidadMascotas: Math.max(1, prev.cantidadMascotas + delta),
+    }));
+  };
 
-      <ErrorMessage message={error} />
+  return (
+    <div className={styles.bookingContainer}>
+        <h2 className={styles.title}>Confia en el buen cuidado de tu mascota</h2>
+      <div className={styles.card}>
+        <h2 className={styles.title}>Reservar un turno</h2>
+        <p className={styles.subtitle}>
+          Elegí el servicio y definí los detalles de tu cita
+        </p>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {/* Tipo de servicio */}
+          <label className={styles.label}>1. Tipo de servicio</label>
+          <div className={styles.serviceButtons}>
+            {["Guardería", "Paseo", "Cuidado e Higiene"].map((service) => (
+              <button
+                key={service}
+                type="button"
+                className={`${styles.serviceBtn} ${
+                  form.tipoServicio === service.toLowerCase()
+                    ? styles.active
+                    : ""
+                }`}
+                onClick={() =>
+                  setForm({ ...form, tipoServicio: service.toLowerCase() })
+                }
+              >
+                {service}
+              </button>
+            ))}
+          </div>
+
+          {/* Fecha y hora */}
+          <label className={styles.label}>2. Fecha y hora</label>
+          <div className={styles.dateTime}>
+            <input
+              type="date"
+              value={form.fechaInicio}
+              onChange={(e) => setForm({ ...form, fechaInicio: e.target.value })}
+            />
+            <input
+              type="time"
+              value={form.horaInicio}
+              onChange={(e) => setForm({ ...form, horaInicio: e.target.value })}
+            />
+          </div>
+
+          {/* Cantidad de mascotas */}
+          <label className={styles.label}>3. Cantidad de mascotas</label>
+          <div className={styles.counter}>
+            <button
+              type="button"
+              onClick={() => handleCantidadChange(-1)}
+              className={styles.counterBtn}
+            >
+              -
+            </button>
+            <span>{form.cantidadMascotas}</span>
+            <button
+              type="button"
+              onClick={() => handleCantidadChange(1)}
+              className={styles.counterBtn}
+            >
+              +
+            </button>
+          </div>
+
+          {error && <ErrorMessage message={error} />}
+
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            disabled={loading}
+          >
+            {loading ? <Loader /> : "Confirmar Reserva"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
