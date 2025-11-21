@@ -1,4 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
+import styles from "./style.module.css";
+import logo from "../../assets/logo.png"
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -10,18 +12,35 @@ export default function Navbar() {
   };
 
   return (
-    <nav style={{ padding: "1rem", backgroundColor: "#f3f3f3" }}>
-      <Link to="/">Inicio</Link> |{" "}
-      {token ? (
-        <>
-          <Link to="/reservar">Reservar</Link> |{" "}
-          <button onClick={handleLogout}>Salir</button>
-        </>
-      ) : (
-        <>
-          <Link to="/login">Login</Link> | <Link to="/register">Registro</Link>
-        </>
-      )}
+    <nav className={styles.navbar}>
+      {/*  Logo */}
+      <div className={styles.logoContainer}>
+        
+        <Link to="/" className={styles.brand}><img src={logo} alt="Huellitas Red logo" className={styles.logo} /></Link>
+      </div>
+
+      {/* Links */}
+      <div className={styles.links}>
+        {token ? (
+          <>
+            <Link to="/reservar" className={styles.link}>
+              Reservar
+            </Link>
+            <button onClick={handleLogout} className={styles.logout}>
+              Salir
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className={styles.link}>
+              Iniciar sesión
+            </Link>
+            <Link to="/register" className={styles.link}>
+              Registrarse
+            </Link>
+          </>
+        )}
+      </div>
     </nav>
   );
 }
