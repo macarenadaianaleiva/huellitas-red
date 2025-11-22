@@ -12,15 +12,17 @@ export default function Login() {
   const navigate = useNavigate();
 
   const validateForm = () => {
-    if (!form.correo || !form.password) {
-      setError("Debes completar todos los campos");
-      return false;
-    }
-    if (!/\S+@\S+\.\S+/.test(form.correo)) {
-      setError("Correo electrónico no válido");
-      return false;
-    }
-    return true;
+   if (!form.correo.trim() || !form.password.trim()) {
+    setError("Debes completar todos los campos");
+    return false;
+  }
+
+  if (!/\S+@\S+\.\S+/.test(form.correo)) {
+    setError("Correo inválido");
+    return false;
+  }
+
+  return true;
   };
 
   const handleSubmit = async (e) => {
