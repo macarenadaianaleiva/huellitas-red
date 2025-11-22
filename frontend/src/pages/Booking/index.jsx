@@ -47,6 +47,12 @@ export default function Booking() {
     }));
   };
 
+  const SERVICES = [
+  { label: "Guardería", value: "guarderia" },
+  { label: "Paseo", value: "paseo" },
+  { label: "Cuidado e Higiene", value: "cuidado" },
+];
+
   return (
     <div className={styles.bookingContainer}>
         <h2 className={styles.title}>Confia en el buen cuidado de tu mascota</h2>
@@ -60,21 +66,17 @@ export default function Booking() {
           {/* Tipo de servicio */}
           <label className={styles.label}>1. Tipo de servicio</label>
           <div className={styles.serviceButtons}>
-            {["Guardería", "Paseo", "Cuidado e Higiene"].map((service) => (
-              <button
-                key={service}
-                type="button"
-                className={`${styles.serviceBtn} ${
-                  form.tipoServicio === service.toLowerCase()
-                    ? styles.active
-                    : ""
-                }`}
-                onClick={() =>
-                  setForm({ ...form, tipoServicio: service.toLowerCase() })
-                }
-              >
-                {service}
-              </button>
+              {SERVICES.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              className={`${styles.serviceBtn} ${
+              form.tipoServicio === s.value ? styles.active : ""
+            }`}
+      onClick={() => setForm({ ...form, tipoServicio: s.value })}
+    >
+      {s.label}
+    </button>
             ))}
           </div>
 

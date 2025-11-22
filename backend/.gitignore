@@ -26,3 +26,5 @@ build/
 # Archivos de sistema de Windows
 Thumbs.db
 ehthumbs.db
+
+/src/generated/prisma
