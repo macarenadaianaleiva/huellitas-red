@@ -18,25 +18,56 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    if (!form.nombre || !form.apellido || !form.correo || !form.password || !form.confirmPassword) {
-      setError("Todos los campos son obligatorios");
-      return false;
-    }
-    if (!/\S+@\S+\.\S+/.test(form.correo)) {
-      setError("El correo electrónico no es válido");
-      return false;
-    }
-    if (form.password.length < 6) {
-      setError("La contraseña debe tener al menos 6 caracteres");
-      return false;
-    }
-    if (form.password !== form.confirmPassword) {
-      setError("Las contraseñas no coinciden");
-      return false;
-    }
-    return true;
-  };
+ const validateForm = () => {
+  const { nombre, apellido, correo, password, confirmPassword } = form;
+
+  // Quitar espacios
+  const cleanNombre = nombre.trim();
+  const cleanApellido = apellido.trim();
+
+  if (!cleanNombre || !cleanApellido || !correo || !password || !confirmPassword) {
+    setError("Todos los campos son obligatorios");
+    return false;
+  }
+
+  // No números en nombre y apellido
+  if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/.test(cleanNombre)) {
+    setError("El nombre no puede contener números ni símbolos");
+    return false;
+  }
+  if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/.test(cleanApellido)) {
+    setError("El apellido no puede contener números ni símbolos");
+    return false;
+  }
+
+  // Email válido
+  if (!/\S+@\S+\.\S+/.test(correo)) {
+    setError("El correo electrónico no es válido");
+    return false;
+  }
+
+  // Contraseña más fuerte
+  if (password.length < 6) {
+    setError("La contraseña debe tener al menos 6 caracteres");
+    return false;
+  }
+  if (!/[0-9]/.test(password)) {
+    setError("La contraseña debe incluir al menos un número");
+    return false;
+  }
+  if (!/[A-Za-z]/.test(password)) {
+    setError("La contraseña debe incluir al menos una letra");
+    return false;
+  }
+
+  // Coincidencia
+  if (password !== confirmPassword) {
+    setError("Las contraseñas no coinciden");
+    return false;
+  }
+
+  return true;
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();

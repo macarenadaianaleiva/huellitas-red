@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Success from "./pages/Success";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Booking from "./pages/Booking";
+import MyBookings from "./pages/MyBookings";
 
 function App() {
   return (
@@ -20,6 +21,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Booking />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mis-reservas"
+          element={
+            <ProtectedRoute>
+              <MyBookings />
             </ProtectedRoute>
           }
         />

@@ -26,6 +26,7 @@ export default function Navbar() {
             <Link to="/reservar" className={styles.link}>
               Reservar
             </Link>
+            <Link to="/mis-reservas" className={styles.link}>Mis Reservas</Link>
             <button onClick={handleLogout} className={styles.logout}>
               Salir
             </button>

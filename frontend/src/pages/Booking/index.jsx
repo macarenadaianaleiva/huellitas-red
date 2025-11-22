@@ -17,28 +17,76 @@ export default function Booking() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    if (!form.tipoServicio) return setError("Seleccioná un tipo de servicio");
-    if (!form.fechaInicio) return setError("Debés elegir una fecha");
-    if (!form.horaInicio) return setError("Debés elegir una hora");
-    return true;
-  };
+const validateForm = () => {
+  const { tipoServicio, fechaInicio, horaInicio, cantidadMascotas } = form;
+
+  if (!tipoServicio) {
+    setError("Seleccioná un tipo de servicio");
+    return false;
+  }
+
+  if (!fechaInicio) {
+    setError("Debés elegir una fecha");
+    return false;
+  }
+
+const fechaSeleccionada = new Date(fechaInicio);
+const maxDate = new Date();
+maxDate.setFullYear(maxDate.getFullYear() + 1);
+
+if (fechaSeleccionada > maxDate) {
+  setError("Solo podés reservar con hasta 1 año de anticipación");
+  return false;
+}
+
+
+  if (!horaInicio) {
+    setError("Debés elegir una hora");
+    return false;
+  }
+
+  // Validar hora (no 00:00 o formato inválido)
+  if (!/^\d{2}:\d{2}$/.test(horaInicio)) {
+    setError("La hora no es válida");
+    return false;
+  }
+
+  // Cantidad de mascotas
+  if (cantidadMascotas < 1) {
+    setError("La cantidad de mascotas debe ser al menos 1");
+    return false;
+  }
+
+  return true;
+};
+
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    if (!validateForm()) return;
+  e.preventDefault();
+  setError("");
 
-    setLoading(true);
-    try {
-      await api.reservar(form);
-      navigate("/success", { state: { type: "reserva" } });
-    } catch (err) {
-      setError(err.message || "Error al registrar la reserva");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!validateForm()) return;
+
+  setLoading(true);
+
+  try {
+    // Crear fecha ISO válida
+    const fechaISO = new Date(`${form.fechaInicio}T${form.horaInicio}:00`);
+
+    await api.reservar({
+      tipoServicio: form.tipoServicio,
+      fechaInicio: fechaISO.toISOString(),
+      horaInicio: form.horaInicio,
+      cantidadMascotas: form.cantidadMascotas,
+    });
+
+    navigate("/success", { state: { type: "reserva" } });
+  } catch (err) {
+    setError(err.message || "Error al registrar la reserva");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleCantidadChange = (delta) => {
     setForm((prev) => ({
@@ -83,11 +131,14 @@ export default function Booking() {
           {/* Fecha y hora */}
           <label className={styles.label}>2. Fecha y hora</label>
           <div className={styles.dateTime}>
-            <input
-              type="date"
-              value={form.fechaInicio}
-              onChange={(e) => setForm({ ...form, fechaInicio: e.target.value })}
-            />
+           <input
+            type="date"
+            value={form.fechaInicio}
+            min={new Date().toISOString().split("T")[0]}
+            max={new Date(Date.now() + 365*24*60*60*1000).toISOString().split("T")[0]}
+            onChange={(e) => setForm({ ...form, fechaInicio: e.target.value })}
+          />
+
             <input
               type="time"
               value={form.horaInicio}
