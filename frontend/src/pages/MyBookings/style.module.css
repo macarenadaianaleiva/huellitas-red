@@ -3,6 +3,7 @@
   min-height: 100vh;
   background: #f8f6ff; 
   padding: 2rem 1rem;
+  background: linear-gradient(to bottom, #e9ddff, #ffffff);
 }
 
 
