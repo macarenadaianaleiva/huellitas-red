@@ -4,7 +4,7 @@ import styles from "./style.module.css";
 export default function Success() {
   const location = useLocation();
   const state = location.state || {}; 
-  const { type = "registro" } = state;
+const { type = "registro", servicio, fecha, hora } = location.state || {};
 
   const isRegistro = type === "registro";
 
@@ -19,11 +19,18 @@ export default function Success() {
           <span className={styles.check}>✓</span>
         </div>
 
-        <p className={styles.message}>
-          {isRegistro
-            ? "Cuenta creada exitosamente"
-            : "Tu turno fue registrado correctamente"}
-        </p>
+    <p className={styles.message}>
+      {isRegistro 
+    ? "Cuenta creada exitosamente"
+    : `Tu turno de ${servicio?.toUpperCase()} fue registrado correctamente`}
+    </p>
+
+      {!isRegistro && (
+    <p className={styles.details}>
+      Fecha: {fecha} — Hora: {hora}
+    </p>
+)}
+
 
         <p className={styles.submessage}>
           Hacé clic en el botón para volver al inicio

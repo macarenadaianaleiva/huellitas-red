@@ -23,6 +23,9 @@ export default function Navbar() {
       <div className={styles.links}>
         {token ? (
           <>
+          <Link to="/" className={styles.link}>
+              Home
+            </Link>
             <Link to="/reservar" className={styles.link}>
               Reservar
             </Link>
@@ -33,6 +36,9 @@ export default function Navbar() {
           </>
         ) : (
           <>
+          <Link to="/" className={styles.link}>
+              Home
+            </Link>
             <Link to="/login" className={styles.link}>
               Iniciar sesión
             </Link>

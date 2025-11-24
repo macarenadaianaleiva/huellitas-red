@@ -74,9 +74,6 @@ export default function Login() {
         </form>
 
         <div className={styles.links}>
-          <Link to="#" className={styles.linkMuted}>
-            ¿Olvidaste tu contraseña?
-          </Link>
           <Link to="/register" className={styles.linkHighlight}>
             Registrate ahora
           </Link>
