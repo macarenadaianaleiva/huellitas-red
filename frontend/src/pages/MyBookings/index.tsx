@@ -3,8 +3,16 @@ import { api } from "../../services/api";
 import ErrorMessage from "../../components/ErrorMessage";
 import styles from "./style.module.css";
 
+type Turno = {
+  id: number;
+  tipoServicio: string;
+  fechaInicio: string;
+  horaInicio: string;
+  cantidadMascotas: number;
+};
+
 export default function MyBookings() {
-  const [turnos, setTurnos] = useState([]);
+  const [turnos, setTurnos] = useState<Turno[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -24,8 +32,10 @@ export default function MyBookings() {
       {error && <ErrorMessage message={error} />}
 
       {!loading && turnos.length === 0 && (
-        <p className={styles.empty}>No tenés reservas todavía</p>
-      )}
+    <p className={styles.empty}>
+      Todavía no realizaste ninguna reserva 🐾
+    </p>
+  )}
 
       <div className={styles.list}>
         {turnos.map((t) => (

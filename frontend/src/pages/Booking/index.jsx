@@ -80,7 +80,15 @@ if (fechaSeleccionada > maxDate) {
       cantidadMascotas: form.cantidadMascotas,
     });
 
-    navigate("/success", { state: { type: "reserva" } });
+    navigate("/success", { 
+  state: { 
+    type: "reserva",
+    servicio: form.tipoServicio,
+    fecha: form.fechaInicio,
+    hora: form.horaInicio
+  } 
+});
+
   } catch (err) {
     setError(err.message || "Error al registrar la reserva");
   } finally {

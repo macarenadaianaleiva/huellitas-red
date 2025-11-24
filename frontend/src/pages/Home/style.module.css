@@ -5,7 +5,7 @@
   align-items: center;
   text-align: center;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #ffffff, #f7f3ff);
+  background: linear-gradient(to bottom, #e9ddff, #ffffff);
   padding: 2rem;
   color: #4b3b73;
   font-family: "Poppins", sans-serif;
@@ -51,6 +51,7 @@
   width: 200px;
   height: 200px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
 }
 
 .card:hover {

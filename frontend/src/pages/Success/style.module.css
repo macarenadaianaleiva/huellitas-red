@@ -68,3 +68,10 @@
 .button:hover {
   background-color: #6945e0;
 }
+
+.details {
+  color: #4b3b73;
+  font-size: 0.95rem;
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+}
